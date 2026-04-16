@@ -12,19 +12,42 @@ public class Playercontroller : MonoBehaviour
 
 
     private Rigidbody2D rb;
+    private Animator pAni;
     private bool isGrounded;
     private float moveInput;
+
+    private bool isGiant = false;
+    void Update()
+    {
+        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+
+        if (isGiant)
+        {
+            if (moveInput < 0)
+                transform.localScale = new Vector3(2, 2, 2);
+            else if (moveInput > 0)
+                transform.localScale = new Vector3(-2, 2, 2);
+        }
+        else
+        {
+            if (moveInput < 0)
+                transform.localScale = new Vector3(1, 1, 1);
+            else if (moveInput > 0)
+                transform.localScale = new Vector3(-1, 1, 1);
+        }
+
+        if (moveInput < 0)
+            transform.localScale = new Vector3(1, 1, 1);
+        else if (moveInput >0)
+            transform.localScale = new Vector3(-1,1,1);
+
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-    }
-
-    private void Update()
-    {
-        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
-
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        pAni = GetComponent<Animator>();
     }
 
     public void OnMove(InputValue value)
@@ -39,6 +62,7 @@ public class Playercontroller : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            pAni.SetTrigger("Jump");
         }
 
     }
@@ -48,10 +72,27 @@ public class Playercontroller : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-        
+
         if (collision.CompareTag("Finish"))
         {
             collision.GetComponent<LevelObject>().MoveToNextLevel();
         }
+        if (collision.CompareTag("Enemy"))
+        {
+            if (isGiant)
+                Destroy(collision.gameObject);
+            else
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        if (collision.CompareTag("Item"))
+        {
+            isGiant = true;
+            Invoke(nameof(ResetGiant), 5f);
+            Destroy(collision.gameObject);
+        }
+    }
+    void ResetGiant()
+    {
+        isGiant = false;
     }
 }

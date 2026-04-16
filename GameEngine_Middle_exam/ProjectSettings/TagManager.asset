@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 3
   tags:
   - Grounded
+  - Boundary
+  - Enemy
+  - Obstacle
+  - Item
   layers:
   - Default
   - TransparentFX
