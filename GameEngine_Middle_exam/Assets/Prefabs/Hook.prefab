@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56455991e8ff1fa4fa1bd7336698694d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrappleHook
-  speed: 20
 --- !u!61 &1455691711926559271
 BoxCollider2D:
   m_ObjectHideFlags: 0

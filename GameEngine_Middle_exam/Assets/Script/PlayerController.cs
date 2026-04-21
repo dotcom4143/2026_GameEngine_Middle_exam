@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     [Header("Grappler")]
     public GameObject hookPrefab;
     public Transform firePoint;
-    public float grappleSpeed = 10f;
+    public float grappleSpeed = 5.0f;
 
     public float moveSpeed = 5.0f;
     public float jumpForce = 5.0f;
@@ -54,14 +54,24 @@ public class PlayerController : MonoBehaviour
 
         if (isGrappling && lineRenderer != null)
         {
-            lineRenderer.SetPosition(0, transform.position);
-            lineRenderer.SetPosition(1, grapplePoint);
+            lineRenderer.positionCount = 20;
+
+            for (int i = 0; i < 20; i++)
+            {
+                float t = i / 19f;
+                Vector2 point = Vector2.Lerp(transform.position, grapplePoint, t);
+
+                float waveStrength = Mathf.Lerp(0.1f, 0f, t);
+                float wave = Mathf.Sin(t * 10f + Time.time * 10f) * waveStrength;
+
+                point += Vector2.Perpendicular(grapplePoint - (Vector2)transform.position).normalized * wave;
+
+                lineRenderer.SetPosition(i, point);
+            }
         }
 
-        // 이동
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
 
-        // 방향 & 크기
         if (isGiant)
         {
             if (moveInput < 0)
@@ -77,20 +87,14 @@ public class PlayerController : MonoBehaviour
                 transform.localScale = new Vector3(-1, 1, 1);
         }
 
-        // (기존 중복 방향 코드 유지)
-        if (moveInput < 0)
-            transform.localScale = new Vector3(1, 1, 1);
-        else if (moveInput > 0)
-            transform.localScale = new Vector3(-1, 1, 1);
-
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
     }
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         pAni = GetComponent<Animator>();
     }
+
 
     public void OnMove(InputValue value)
     {
@@ -104,7 +108,6 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            pAni.SetTrigger("Jump");
         }
     }
 
@@ -157,10 +160,25 @@ public class PlayerController : MonoBehaviour
 
     void FireHook()
     {
+        // 오류가 많이나서 디버그 확인
+        Debug.Log("hookPrefab: " + hookPrefab);
+        Debug.Log("firePoint: " + firePoint);
+        Debug.Log("camera: " + Camera.main);
+        Debug.Log("Shooted");
+        Debug.Log(hookPrefab);
+        Debug.Log("Ground Hited");
+
+        if (hookPrefab == null || firePoint == null)
+        {
+            Debug.LogError("HookPrefab or FirePoint not assigned!");
+            return;
+        }
+
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 dir = (mousePos - (Vector2)firePoint.position).normalized;
 
         GameObject hook = Instantiate(hookPrefab, firePoint.position, Quaternion.identity);
+
         hook.GetComponent<GrappleHook>().Init(dir, this);
     }
 
@@ -173,7 +191,7 @@ public class PlayerController : MonoBehaviour
 
         if (lineRenderer != null)
         {
-            lineRenderer.positionCount = 2;
+            lineRenderer.positionCount = 20;
         }
     }
 

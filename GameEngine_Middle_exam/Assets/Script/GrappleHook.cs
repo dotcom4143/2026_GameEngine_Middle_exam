@@ -2,26 +2,18 @@ using UnityEngine;
 
 public class GrappleHook : MonoBehaviour
 {
-    public float speed = 7f;
-    public float maxDistance = 3f;
+    private float speed = 20f;
+    private float maxDistance = 2f;
 
     private Vector2 direction;
     private Vector2 startPos;
     private PlayerController player;
 
-    public void Init(Vector2 dir, PlayerController owner)
+    public void Init(Vector2 dir, PlayerController pc)
     {
-        direction = dir.normalized;
-        player = owner;
+        direction = dir;
+        player = pc;
         startPos = transform.position;
-
-        Collider2D playerCol = player.GetComponent<Collider2D>();
-        Collider2D hookCol = GetComponent<Collider2D>();
-
-        if (playerCol != null && hookCol != null)
-        {
-            Physics2D.IgnoreCollision(playerCol, hookCol);
-        }
     }
 
     void Update()
@@ -34,13 +26,12 @@ public class GrappleHook : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Grounded"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             player.OnHookHit(transform.position);
+            Destroy(gameObject);
         }
-
-        Destroy(gameObject);
     }
 }
