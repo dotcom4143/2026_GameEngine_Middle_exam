@@ -13,6 +13,11 @@ public class ElementalChecker : MonoBehaviour
 
     public Element currentElement;
 
+    public bool CanGrapple()
+    {
+        return isNature;
+    }
+
     public bool isFire => currentElement == Element.Fire;
     public bool isNature => currentElement == Element.Nature;
     public bool isWater => currentElement == Element.Water;

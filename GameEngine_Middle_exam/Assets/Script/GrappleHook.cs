@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class GrappleHook : MonoBehaviour
 {
-    private float speed = 20f;
+    private float speed = 0.5f;
     private float maxDistance = 2f;
 
     private Vector2 direction;
     private Vector2 startPos;
-    private PlayerController player;
+    private RealPlayerController player;
 
-    public void Init(Vector2 dir, PlayerController pc)
+    public void Init(Vector2 dir, RealPlayerController pc)
     {
         direction = dir;
         player = pc;
