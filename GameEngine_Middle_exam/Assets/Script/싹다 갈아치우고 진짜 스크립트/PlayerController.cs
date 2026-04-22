@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,9 +16,16 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded;
 
+    private bool isInvincible = false;
+
+    private float originalSpeed;
+    private Coroutine speedCoroutine;
+    private Coroutine invincibleCoroutine;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        originalSpeed = moveSpeed;
     }
 
     void Update()
@@ -41,10 +49,53 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
     }
 
+    public void ActivateInvincibility(float duration)
+    {
+        if (invincibleCoroutine != null)
+        {
+            StopCoroutine(invincibleCoroutine);
+        }
+
+        invincibleCoroutine = StartCoroutine(InvincibleCoroutine(duration));
+    }
+
+    IEnumerator InvincibleCoroutine(float duration)
+    {
+        isInvincible = true;
+
+        yield return new WaitForSeconds(duration);
+
+        isInvincible = false;
+    }
+
+    public void ActivateSpeedBoost(float multiplier, float duration)
+    {
+        if (speedCoroutine != null)
+        {
+            StopCoroutine(speedCoroutine);
+        }
+
+        speedCoroutine = StartCoroutine(SpeedBoostCoroutine(multiplier, duration));
+    }
+
+    IEnumerator SpeedBoostCoroutine(float multiplier, float duration)
+    {
+        moveSpeed = originalSpeed * multiplier;
+
+        yield return new WaitForSeconds(duration);
+
+        moveSpeed = originalSpeed;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Respawn"))
         {
+            if (isInvincible)
+            {
+                return;
+            }
+
             RestartScene();
         }
     }
