@@ -4,24 +4,40 @@ public class BlinkToHere : MonoBehaviour
 {
     public Transform player;
     public Transform mouseFollower;
-    public float distanceFromPlayer = 3f;
 
-    private ElementalChecker elementalChecker;
-
-    void Start()
-    {
-        elementalChecker = player.GetComponent<ElementalChecker>();
-    }
+    public float blinkCooldown = 1.5f;
+    private float lastBlinkTime;
 
     void Update()
     {
-        UpdatePosition();
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            TryBlink();
+        }
     }
 
-    void UpdatePosition()
+    void TryBlink()
     {
-        Vector2 dir = (mouseFollower.position - player.position).normalized;
-        transform.position = (Vector2)player.position + dir * distanceFromPlayer;
-        transform.right = dir;
+        if (Time.time < lastBlinkTime + blinkCooldown)
+            return;
+
+        if (player == null || mouseFollower == null)
+        {
+            return;
+        }
+
+        Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.position = mouseFollower.position;
+        }
+        else
+        {
+            player.position = mouseFollower.position;
+        }
+
+        lastBlinkTime = Time.time;
     }
 }

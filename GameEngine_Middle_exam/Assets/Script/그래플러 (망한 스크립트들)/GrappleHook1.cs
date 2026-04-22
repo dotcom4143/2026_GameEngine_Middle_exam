@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 
 public class GrappleHook : MonoBehaviour
 {
@@ -35,3 +35,4 @@ public class GrappleHook : MonoBehaviour
         }
     }
 }
+*/
