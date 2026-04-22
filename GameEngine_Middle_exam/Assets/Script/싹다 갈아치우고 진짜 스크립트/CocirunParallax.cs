@@ -17,6 +17,17 @@ public class CocirunParallax : MonoBehaviour
     void Update()
     {
         float distance = cameraTransform.position.x * parallaxEffect;
+        float movement = cameraTransform.position.x * (1 - parallaxEffect);
+
         transform.position = new Vector3(startPos + distance, transform.position.y, transform.position.z);
+
+        if (movement > startPos + spriteWidth)
+        {
+            startPos += spriteWidth;
+        }
+        else if (movement < startPos - spriteWidth)
+        {
+            startPos -= spriteWidth;
+        }
     }
 }

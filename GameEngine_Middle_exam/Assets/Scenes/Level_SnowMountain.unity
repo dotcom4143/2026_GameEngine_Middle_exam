@@ -9367,6 +9367,18 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
+--- !u!114 &1822456414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822456397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8be5493e8a15c040b4bb5d87a2d30f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Goal
 --- !u!1 &1846063047
 GameObject:
   m_ObjectHideFlags: 0
@@ -11017,6 +11029,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4426949649722359421, guid: a492063462cc90946aeee27d2f40c8bc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1822456408}
+    - targetCorrespondingSourceObject: {fileID: 4426949649722359421, guid: a492063462cc90946aeee27d2f40c8bc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1822456414}
   m_SourcePrefab: {fileID: 100100000, guid: a492063462cc90946aeee27d2f40c8bc, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
