@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,10 +23,13 @@ public class PlayerController : MonoBehaviour
     private Coroutine speedCoroutine;
     private Coroutine invincibleCoroutine;
 
+    float score;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         originalSpeed = moveSpeed;
+        score= 0f;
     }
 
     void Update()
@@ -97,6 +101,14 @@ public class PlayerController : MonoBehaviour
             }
 
             RestartScene();
+        }
+        
+        if (collision.CompareTag("Finish"))
+        {
+            //HighScore.TrySet(SceneManager.GetActiveScene().buildIndex, (int)score);
+            StageResultSaver.SaveStage(SceneManager.GetActiveScene().buildIndex, (int)score);
+
+            collision.GetComponent<LevelObject>().MoveToNextLevel();
         }
     }
 

@@ -21,11 +21,14 @@ EditorBuildSettings:
     path: Assets/Scenes/Level_Villige.unity
     guid: 6a2530ce98017224cb17a0715b5d7479
   - enabled: 1
+    path: Assets/Scenes/Level_Dungeon.unity
+    guid: 2868f1885b525934cb7af7ca0b049776
+  - enabled: 1
     path: Assets/Scenes/Start_openUI.unity
     guid: 496b4e316235e6949a05bade60ccadb8
   - enabled: 1
-    path: Assets/Scenes/Level_Dungeon.unity
-    guid: 2868f1885b525934cb7af7ca0b049776
+    path: Assets/Scenes/Level_Hello_Im_Hidden.unity
+    guid: 741ce88906a407d40b3e17071d0b770c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
